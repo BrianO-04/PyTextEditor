@@ -26,6 +26,24 @@ def load(window, text_edit):
         f.close()
     window.title(f"{fp}")
 
+def replace(window, text_edit, original, replace):
+    content = text_edit.get(1.0, tk.END)
+    first_index = content.find(original)
+
+    if first_index == -1:
+        return
+
+    new_content = ""
+
+    while first_index != -1:
+        new_content += content[:first_index] + replace
+        content = content[first_index+1:]
+        first_index = content.find(original)
+        if first_index == -1:
+            new_content += content
+
+    text_edit.delete(1.0, tk.END)
+    text_edit.insert(tk.END, new_content)
 
 def main():
     window = tk.Tk()
@@ -40,9 +58,11 @@ def main():
     
     save_button = tk.Button(frame, text="Save", command=lambda: save(window, text_edit))
     open_button = tk.Button(frame, text="Open", command=lambda: load(window, text_edit))
+    replace_button = tk.Button(frame, text="Replace all", command=lambda: replace(window, text_edit, 'a', 'test'))
 
     save_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
     open_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+    replace_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
     frame.grid(row=0, column=0, sticky="ns")
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
