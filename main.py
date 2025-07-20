@@ -8,7 +8,7 @@ def save(window, text_edit):
     if not fp:
         return
     
-    with open(fp, "w") as f:
+    with open(fp, "w", encoding='utf8') as f:
         content = text_edit.get(1.0, tk.END)
         f.write(content)
         f.close()
@@ -21,7 +21,7 @@ def load(window, text_edit):
         return
     
     text_edit.delete(1.0, tk.END)
-    with open(fp, "r") as f:
+    with open(fp, "r", encoding='utf8') as f:
         content = f.read()
         text_edit.insert(tk.END, content)
         f.close()
