@@ -84,9 +84,15 @@ def replace(window, text_edit, original, replace):
             new_content += content
 
     text_edit.delete(1.0, tk.END)
-    text_edit.insert(tk.END, new_content)
+    text_edit.insert(tk.END, new_content[:-1])
 
     replace_popup.destroy()
+
+def remove_at_index(window, text_edit, index):
+    content = text_edit.get(1.0, tk.END)
+    new_content = content[:index-1] + content[index:-1]
+    text_edit.delete(1.0, tk.END)
+    text_edit.insert(tk.END, new_content)
 
 def main():
     window = tk.Tk()
@@ -102,10 +108,12 @@ def main():
     save_button = tk.Button(frame, text="Save", command=lambda: save(window, text_edit))
     open_button = tk.Button(frame, text="Open", command=lambda: load(window, text_edit))
     replace_button = tk.Button(frame, text="Replace all", command=lambda: replace_window(window, text_edit))
+    remove_at_button = tk.Button(frame, text="Remove at index", command=lambda: remove_at_index(window, text_edit, 5))
 
     save_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
     open_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
     replace_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+    remove_at_button.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
     frame.grid(row=0, column=0, sticky="ns")
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
