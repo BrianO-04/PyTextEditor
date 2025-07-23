@@ -90,7 +90,19 @@ def replace(window, text_edit, original, replace):
 
 def remove_at_index(window, text_edit, index):
     content = text_edit.get(1.0, tk.END)
+    if index > len(content):
+        return
+
     new_content = content[:index-1] + content[index:-1]
+    text_edit.delete(1.0, tk.END)
+    text_edit.insert(tk.END, new_content)
+
+def add_at_index(text_edit, index, string):
+    content = text_edit.get(1.0, tk.END)
+    if index > len(content):
+        index = len(content)
+
+    new_content = content[:index] + string + content[index:-1]
     text_edit.delete(1.0, tk.END)
     text_edit.insert(tk.END, new_content)
 
@@ -108,12 +120,16 @@ def main():
     save_button = tk.Button(frame, text="Save", command=lambda: save(window, text_edit))
     open_button = tk.Button(frame, text="Open", command=lambda: load(window, text_edit))
     replace_button = tk.Button(frame, text="Replace all", command=lambda: replace_window(window, text_edit))
+
+    #TEMP BUTTONS
     remove_at_button = tk.Button(frame, text="Remove at index", command=lambda: remove_at_index(window, text_edit, 5))
+    add_at_button = tk.Button(frame, text="Add at index", command=lambda: add_at_index(text_edit, 5, "test"))
 
     save_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
     open_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
     replace_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
     remove_at_button.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
+    add_at_button.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
     frame.grid(row=0, column=0, sticky="ns")
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
