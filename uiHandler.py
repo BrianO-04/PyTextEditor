@@ -4,6 +4,8 @@ from tkinter import *
 side_button_index = 0
 side_buttons = []
 
+popup_open = False
+
 def add_side_button(frame, text, command):
     global side_button_index
     global side_buttons
@@ -12,9 +14,18 @@ def add_side_button(frame, text, command):
     side_button_index += 1
     side_buttons.append(button)
 
+#any command given must take 3 parameters, window, text_edit, and inputs array
 def create_popup(window, text_edit, window_title, input_boxes, command):
     global popup_window
+    global popup_open
+
+    if popup_open:
+        return
+    else:
+        popup_open = True
+
     popup_window = Tk()
+    popup_window.protocol("WM_DELETE_WINDOW", close_popup)
 
     popup_window.title(window_title)
     size = len(input_boxes) * 50 + 60
@@ -27,6 +38,8 @@ def create_popup(window, text_edit, window_title, input_boxes, command):
     buttons_frame = Frame(popup_window)
     buttons_frame.pack(pady=5, side=tk.BOTTOM)
 
+    inputs = []
+
     cur_row = 0
     for x in input_boxes:
         label = Label(frame, text=x)
@@ -38,9 +51,22 @@ def create_popup(window, text_edit, window_title, input_boxes, command):
         label.grid(row=cur_row, column=0)
         inp_frame.grid(row=cur_row, column=1)
         cur_row += 1
+        
+        inputs.append(inp)
 
-    confirm = Button(buttons_frame, text="Confirm", command=command)
-    cancel = Button(buttons_frame, text="Cancel", command=popup_window.destroy)
+    confirm = Button(buttons_frame, text="Confirm", command=lambda: command(window, text_edit, inputs))
+    cancel = Button(buttons_frame, text="Cancel", command=lambda: close_popup())
 
     confirm.grid(row=0, column=0, pady=5, padx=5)
     cancel.grid(row=0, column=1, pady=5, padx=5)
+
+def close_popup():
+    global popup_open
+    popup_window.destroy()
+    popup_open = False
+
+def get_text_input(text_boxes):
+    output = []
+    for x in text_boxes:
+        output.append(x.get(1.0, tk.END).strip())
+    return output
