@@ -119,13 +119,13 @@ def main():
     frame = tk.Frame(window, relief=tk.RAISED, bd=2)
     frame.grid(row=0, column=0, sticky="ns")
 
-    ui.add_button(frame, "Save", lambda: save(window, text_edit))
-    ui.add_button(frame, "Open", lambda: load(window, text_edit))
-    ui.add_button(frame, "Replace All", lambda: replace_window(window, text_edit))
+    ui.add_side_button(frame, "Save", lambda: save(window, text_edit))
+    ui.add_side_button(frame, "Open", lambda: load(window, text_edit))
+    ui.add_side_button(frame, "Replace All", lambda: replace_window(window, text_edit))
 
     #TEMP BUTTONS
-    ui.add_button(frame, "Remove at index", lambda: remove_at_index(window, text_edit, 5))
-    ui.add_button(frame, "Add at index", lambda: add_at_index(text_edit, 5, "test"))
+    ui.add_side_button(frame, "Remove at index", lambda: remove_at_index(window, text_edit, 5))
+    ui.add_side_button(frame, "Add at index", lambda: add_at_index(text_edit, 5, "test"))
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
     window.bind("<Control-o>", lambda x: open(window, text_edit))
