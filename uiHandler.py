@@ -29,7 +29,6 @@ def create_popup(window, text_edit, window_title, input_boxes, command):
 
     popup_window.title(window_title)
     size = len(input_boxes) * 50 + 60
-    print(size)
     popup_window.geometry(f"500x{size}")
     
     frame = Frame(popup_window)

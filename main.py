@@ -55,7 +55,16 @@ def replace(window, text_edit, inputs):
     ui.close_popup()
 
 def remove_at_index(window, text_edit, index):
+    index = ui.get_text_input(index)
+    index = index[0]
+    try:
+        index = int(index)
+    except:
+        print("Expected an integer as input")
+        return
+
     content = text_edit.get(1.0, tk.END)
+    
     if index > len(content):
         return
 
@@ -63,14 +72,22 @@ def remove_at_index(window, text_edit, index):
     text_edit.delete(1.0, tk.END)
     text_edit.insert(tk.END, new_content)
 
-def add_at_index(text_edit, index, string):
+def add_at_index(window, text_edit, inputs):
+    inputs = ui.get_text_input(inputs)
     content = text_edit.get(1.0, tk.END)
+    try:
+        index = int(inputs[0])
+    except:
+        print("Expected an integer as first input")
+        return
+    
     if index > len(content):
         index = len(content)
 
-    new_content = content[:index] + string + content[index:-1]
+    new_content = content[:index] + inputs[1] + content[index:-1]
     text_edit.delete(1.0, tk.END)
     text_edit.insert(tk.END, new_content)
+    ui.close_popup()
 
 #debug func
 def print_inputs(window, text_edit, inputs):
@@ -93,11 +110,11 @@ def main():
 
     ui.add_side_button(frame, "Save", lambda: save(window, text_edit))
     ui.add_side_button(frame, "Open", lambda: load(window, text_edit))
-    ui.add_side_button(frame, "Replace All", lambda: ui.create_popup(window, text_edit, "Test popup", ["Original: ", "New: "], replace))
+    ui.add_side_button(frame, "Replace All", lambda: ui.create_popup(window, text_edit, "Replace All", ["Original: ", "New: "], replace))
 
     #TEMP BUTTONS
-    ui.add_side_button(frame, "Remove at index", lambda: remove_at_index(window, text_edit, 5))
-    ui.add_side_button(frame, "Add at index", lambda: add_at_index(text_edit, 5, "test"))
+    ui.add_side_button(frame, "Remove at index", lambda: ui.create_popup(window, text_edit, "Add at index", ["Index: "], remove_at_index))
+    ui.add_side_button(frame, "Add at index", lambda: ui.create_popup(window, text_edit, "Add at index", ["Index: ", "New Text: "], add_at_index))
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
     window.bind("<Control-o>", lambda x: open(window, text_edit))
