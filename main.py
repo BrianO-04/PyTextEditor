@@ -126,6 +126,7 @@ def main():
     #TEMP BUTTONS
     ui.add_side_button(frame, "Remove at index", lambda: remove_at_index(window, text_edit, 5))
     ui.add_side_button(frame, "Add at index", lambda: add_at_index(text_edit, 5, "test"))
+    ui.add_side_button(frame, "Test popup", lambda: ui.create_popup(window, text_edit, "Test popup", ["test1", "test2", "test3", "test4"], lambda: add_at_index(text_edit, 5, "test")))
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
     window.bind("<Control-o>", lambda x: open(window, text_edit))
