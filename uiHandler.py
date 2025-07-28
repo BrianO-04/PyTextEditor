@@ -15,7 +15,7 @@ def add_side_button(frame, text, command):
     side_buttons.append(button)
 
 #any command given must take 3 parameters, window, text_edit, and inputs array
-def create_popup(window, text_edit, window_title, input_boxes, command):
+def create_popup(text_edit, window_title, input_boxes, command):
     global popup_window
     global popup_open
 
@@ -53,7 +53,7 @@ def create_popup(window, text_edit, window_title, input_boxes, command):
         
         inputs.append(inp)
 
-    confirm = Button(buttons_frame, text="Confirm", command=lambda: command(window, text_edit, inputs))
+    confirm = Button(buttons_frame, text="Confirm", command=lambda: command(text_edit, inputs))
     cancel = Button(buttons_frame, text="Cancel", command=lambda: close_popup())
 
     confirm.grid(row=0, column=0, pady=5, padx=5)

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 import uiHandler as ui
+import interpreter as sc
 
 def save(window, text_edit):
     fp = asksaveasfilename(filetypes=[("Text Files", "*.txt")])
@@ -27,7 +28,7 @@ def load(window, text_edit):
         f.close()
     window.title(f"{fp}")
 
-def replace(window, text_edit, inputs):
+def replace(text_edit, inputs):
     inputs = ui.get_text_input(inputs)
     content = text_edit.get(1.0, tk.END)
     first_index = content.find(inputs[0])
@@ -53,7 +54,7 @@ def replace(window, text_edit, inputs):
 
     ui.close_popup()
 
-def remove_at_index(window, text_edit, index):
+def remove_at_index(text_edit, index):
     index = ui.get_text_input(index)
     index = index[0]
     try:
@@ -71,7 +72,7 @@ def remove_at_index(window, text_edit, index):
     text_edit.delete(1.0, tk.END)
     text_edit.insert(tk.END, new_content)
 
-def add_at_index(window, text_edit, inputs):
+def add_at_index(text_edit, inputs):
     inputs = ui.get_text_input(inputs)
     content = text_edit.get(1.0, tk.END)
     try:
@@ -88,12 +89,11 @@ def add_at_index(window, text_edit, inputs):
     text_edit.insert(tk.END, new_content)
     ui.close_popup()
 
-#debug func
-def print_inputs(window, text_edit, inputs):
-    inputs = ui.get_text_input(inputs)
-    for x in inputs:
-        print(x)
-    ui.close_popup()
+def add_funcs():
+    sc.add_func(replace, "replace", 2)
+    sc.add_func(remove_at_index, "remove", 2)
+    sc.add_func(add_at_index, "add", 2)
+
 
 def main():
     window = tk.Tk()
@@ -104,16 +104,19 @@ def main():
     text_edit = tk.Text(window, font="Helvetica 18")
     text_edit.grid(row=0, column=1)
 
+    sc.text_edit = text_edit
+
     frame = tk.Frame(window, relief=tk.RAISED, bd=2)
     frame.grid(row=0, column=0, sticky="ns")
 
     ui.add_side_button(frame, "Save", lambda: save(window, text_edit))
     ui.add_side_button(frame, "Open", lambda: load(window, text_edit))
-    ui.add_side_button(frame, "Replace All", lambda: ui.create_popup(window, text_edit, "Replace All", ["Original: ", "New: "], replace))
+    ui.add_side_button(frame, "Replace All", lambda: ui.create_popup(text_edit, "Replace All", ["Original: ", "New: "], replace))
 
     #TEMP BUTTONS
-    ui.add_side_button(frame, "Remove at index", lambda: ui.create_popup(window, text_edit, "Add at index", ["Index: "], remove_at_index))
-    ui.add_side_button(frame, "Add at index", lambda: ui.create_popup(window, text_edit, "Add at index", ["Index: ", "New Text: "], add_at_index))
+    ui.add_side_button(frame, "Remove at index", lambda: ui.create_popup(text_edit, "Add at index", ["Index: "], remove_at_index))
+    ui.add_side_button(frame, "Add at index", lambda: ui.create_popup(text_edit, "Add at index", ["Index: ", "New Text: "], add_at_index))
+    ui.add_side_button(frame, "Interpreter Test", lambda: sc.load_script())
 
     window.bind("<Control-s>", lambda x: save(window, text_edit))
     window.bind("<Control-o>", lambda x: open(window, text_edit))
