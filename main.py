@@ -121,6 +121,8 @@ def main():
     window.bind("<Control-s>", lambda x: save(window, text_edit))
     window.bind("<Control-o>", lambda x: open(window, text_edit))
 
+    add_funcs()
+
     window.mainloop()
 
 main()

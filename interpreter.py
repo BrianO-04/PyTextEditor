@@ -13,20 +13,10 @@ def load_script():
         f.close()
     
     content = content.split(" ")
-    length = len(content)
+    args = function_dict[content[0]][1]
     index = 0
 
-    while index < length:
-        if content[index] in function_dict:
-            args = []
-            total_args = function_dict[content[index]][1]
-            tmp_idx = 0
-            while tmp_idx < total_args:
-                args.append(content[index+1+tmp_idx])
-            function_dict[content[index]][0](text_edit, args)
-            index = index + total_args
-
-    print(content)
+    print(f"content: {content}\Args: {args}\nIndex: {index}")
 
 def add_func(function, name, args):
     function_dict.update({name : [function, args]})
