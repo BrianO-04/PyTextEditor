@@ -61,10 +61,13 @@ def create_popup(text_edit, window_title, input_boxes, command):
 
 def close_popup():
     global popup_open
-    popup_window.destroy()
+    if popup_open:
+        popup_window.destroy()
     popup_open = False
 
 def get_text_input(text_boxes):
+    if type(text_boxes[0]) != tk.Text:
+        return text_boxes
     output = []
     for x in text_boxes:
         output.append(x.get(1.0, tk.END).strip())

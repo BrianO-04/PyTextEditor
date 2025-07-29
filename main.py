@@ -37,7 +37,7 @@ def replace(text_edit, inputs):
     print(inputs[1])
 
     if first_index == -1:
-        ui.popup_window.destroy()
+        ui.close_popup()
         return
 
     new_content = ""
