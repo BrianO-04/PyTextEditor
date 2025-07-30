@@ -12,20 +12,33 @@ def load_script():
         content = f.read()
         f.close()
     
-    content = content.split(" ")
+    commands = []
+    for c in content.split(";"):
+        if len(c.strip()) > 0:
+            commands.append(c.strip())
+    
+    print(commands)
+
+    for command in commands:
+        if len(command) > 0:
+            run_command(command)
+    
+
+def run_command(command):
+    command = command.split(" ")
     index = 0
 
-    while index < len(content):
-        args = function_dict[content[index]][1]
+    while index < len(command):
+        args = function_dict[command[index]][1]
         arg_index = 1
         tmp_args = []
         while arg_index <= args:
-            tmp_args.append(content[index + arg_index].strip())
+            tmp_args.append(command[index + arg_index].strip())
             arg_index += 1
-        function_dict[content[index]][0](text_edit, tmp_args)
+        function_dict[command[index]][0](text_edit, tmp_args)
         index += args+1
     
-    print(f"content: {content}\nArgs: {args}")
+    #print(f"command: {command}\nArgs: {args}")
 
 def add_func(function, name, args):
     function_dict.update({name : [function, args]})

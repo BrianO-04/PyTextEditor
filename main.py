@@ -33,8 +33,8 @@ def replace(text_edit, inputs):
     content = text_edit.get(1.0, tk.END)
     first_index = content.find(inputs[0])
 
-    print(inputs[0])
-    print(inputs[1])
+    #print(inputs[0])
+    #print(inputs[1])
 
     if first_index == -1:
         ui.close_popup()
