@@ -53,6 +53,7 @@ def replace(text_edit, inputs):
     text_edit.insert(tk.END, new_content[:-1])
 
     ui.close_popup()
+    return 1
 
 def remove_at_index(text_edit, index):
     index = ui.get_text_input(index)
@@ -89,10 +90,32 @@ def add_at_index(text_edit, inputs):
     text_edit.insert(tk.END, new_content)
     ui.close_popup()
 
+def find_first(text_edit, inputs):
+    content = text_edit.get(1.0, tk.END)
+    first_index = content.find(inputs[0])
+    return first_index
+
+def contains(text_edit, inputs):
+    content = text_edit.get(1.0, tk.END)
+    first_index = content.find(inputs[0])
+    if first_index == -1:
+        return 0
+    return 1
+
+def if_equal(text_edit, inputs):
+    return inputs[0] == inputs[1]
+
+def invert_func(text_edit, inputs):
+    return not inputs[0]
+
 def add_funcs():
+    sc.add_func(invert_func, "not", 1)
     sc.add_func(replace, "replace", 2)
     sc.add_func(remove_at_index, "remove", 2)
     sc.add_func(add_at_index, "add", 2)
+    sc.add_func(find_first, "find", 1)
+    sc.add_func(contains, "contains", 1)
+    sc.add_func(if_equal, "equals", 2)
 
 
 def main():

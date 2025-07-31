@@ -21,10 +21,12 @@ def load_script():
 
     for command in commands:
         if len(command) > 0:
-            run_command(command)
+            #run_command(command)
+            pass
     
 
 def run_command(command):
+    parse_command(command)
     command = command.split(" ")
     index = 0
 
@@ -39,6 +41,16 @@ def run_command(command):
         index += args+1
     
     #print(f"command: {command}\nArgs: {args}")
+
+def parse_command(command):
+    index = 0
+    for char in command:
+        if char == '(':
+            print(f"( at {index}")
+        elif char == ')':
+            print(f") at {index}")
+        index += 1
+
 
 def add_func(function, name, args):
     function_dict.update({name : [function, args]})
