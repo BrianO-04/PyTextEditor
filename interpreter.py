@@ -21,8 +21,7 @@ def load_script():
 
     for command in commands:
         if len(command) > 0:
-            #run_command(command)
-            pass
+            run_command(command)
     
 
 def run_command(command):
