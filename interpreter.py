@@ -50,7 +50,7 @@ def parse_command(command):
     close_parens = 0
 
     for char in command:
-        if char == ' ' and open_parens == 0:
+        if char == ' ' and open_parens == 0 and index != fst_index:
             sub_commands.append(command[fst_index:index])
             fst_index = index+1
         elif char == '(':
@@ -61,6 +61,7 @@ def parse_command(command):
             close_parens += 1
             if open_parens == close_parens:
                 sub_commands.append(command[parens_index+1:index])
+                fst_index = index+1
                 open_parens = 0
                 close_parens = 0
         index += 1
