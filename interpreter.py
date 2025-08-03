@@ -21,7 +21,8 @@ def load_script():
 
     for command in commands:
         if len(command) > 0:
-            run_command(command)
+            #run_command(command)
+            parse_command(command)
     
 
 def run_command(command):
@@ -39,16 +40,31 @@ def run_command(command):
         function_dict[command[index]][0](text_edit, tmp_args)
         index += args+1
     
-    #print(f"command: {command}\nArgs: {args}")
-
+    
 def parse_command(command):
     index = 0
+
+    sub_commands = []
+
+    start_index = 0
+
+    open_parens = 0
+    close_parens = 0
+
     for char in command:
         if char == '(':
-            print(f"( at {index}")
+            if open_parens == 0:
+                start_index = index
+            open_parens += 1
         elif char == ')':
-            print(f") at {index}")
+            close_parens += 1
+            if open_parens == close_parens:
+                sub_commands.append(command[start_index+1:index])
+                open_parens = 0
+                close_parens = 0
         index += 1
+    
+    print(sub_commands)
 
 
 def add_func(function, name, args):
