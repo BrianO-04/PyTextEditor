@@ -33,11 +33,15 @@ def parse_command(command):
             command[idx] = split_command(command[idx])
             
             if command[idx][0] in function_dict:
-                pass
+                command[idx] = run_command(command[idx])
 
             idx += 1
 
     print(command)
+    return run_command(command)
+
+def run_command(command):
+    return function_dict[command[0]][0](text_edit, command[1:])
 
     # index = 0
 

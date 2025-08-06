@@ -31,7 +31,7 @@ def load(window, text_edit):
 def replace(text_edit, inputs):
     inputs = ui.get_text_input(inputs)
     content = text_edit.get(1.0, tk.END)
-    first_index = content.find(inputs[0])
+    first_index = content.find(inputs[0][0]) #split command puts the arguments into their own lists so this has to be like this until I fix that
 
     if first_index == -1:
         ui.close_popup()
@@ -40,9 +40,9 @@ def replace(text_edit, inputs):
     new_content = ""
 
     while first_index != -1:
-        new_content += content[:first_index] + inputs[1]
-        content = content[first_index+len(inputs[0]):]
-        first_index = content.find(inputs[0])
+        new_content += content[:first_index] + inputs[1][0]
+        content = content[first_index+len(inputs[0][0]):]
+        first_index = content.find(inputs[0][0])
         if first_index == -1:
             new_content += content
 
@@ -106,7 +106,8 @@ def invert_func(text_edit, inputs):
     return not inputs[0]
 
 def get_index(text_edit, inputs):
-    return text_edit.get(1.0, tk.END)[inputs[0]]
+    index = int(inputs[0])
+    return text_edit.get(1.0, tk.END)[index]
 
 def add_funcs():
     sc.add_func(invert_func, "not", 1)
