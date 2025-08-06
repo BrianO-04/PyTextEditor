@@ -33,9 +33,6 @@ def replace(text_edit, inputs):
     content = text_edit.get(1.0, tk.END)
     first_index = content.find(inputs[0])
 
-    #print(inputs[0])
-    #print(inputs[1])
-
     if first_index == -1:
         ui.close_popup()
         return
@@ -108,12 +105,16 @@ def if_equal(text_edit, inputs):
 def invert_func(text_edit, inputs):
     return not inputs[0]
 
+def get_index(text_edit, inputs):
+    return text_edit.get(1.0, tk.END)[inputs[0]]
+
 def add_funcs():
     sc.add_func(invert_func, "not", 1)
     sc.add_func(replace, "replace", 2)
     sc.add_func(remove_at_index, "remove", 2)
     sc.add_func(add_at_index, "add", 2)
     sc.add_func(find_first, "find", 1)
+    sc.add_func(get_index, "get", 1)
     sc.add_func(contains, "contains", 1)
     sc.add_func(if_equal, "equals", 2)
 

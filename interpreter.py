@@ -22,23 +22,37 @@ def load_script():
             parse_command(command)
     
 
-def run_command(command):
-    parse_command(command)
-    command = command.split(" ")
-    index = 0
-
-    while index < len(command):
-        args = function_dict[command[index]][1]
-        arg_index = 1
-        tmp_args = []
-        while arg_index <= args:
-            tmp_args.append(command[index + arg_index].strip())
-            arg_index += 1
-        function_dict[command[index]][0](text_edit, tmp_args)
-        index += args+1
-    
-    
 def parse_command(command):
+    command = split_command(command)
+
+    if command[0] not in function_dict:
+        return command
+    else:
+        idx = 1
+        while idx < len(command):
+            command[idx] = split_command(command[idx])
+            
+            if command[idx][0] in function_dict:
+                pass
+
+            idx += 1
+
+    print(command)
+
+    # index = 0
+
+    # while index < len(command):
+    #     args = function_dict[command[index]][1]
+    #     arg_index = 1
+    #     tmp_args = []
+    #     while arg_index <= args:
+    #         tmp_args.append(command[index + arg_index].strip())
+    #         arg_index += 1
+    #     function_dict[command[index]][0](text_edit, tmp_args)
+    #     index += args+1
+    
+    
+def split_command(command):
     index = 0
     fst_index = 0
 
@@ -63,9 +77,18 @@ def parse_command(command):
                 fst_index = index+1
                 open_parens = 0
                 close_parens = 0
+        elif index == len(command)-1:
+            sub_commands.append(command[fst_index:index+1])
         index += 1
-    
-    print(sub_commands)
+
+    final = []
+
+    for sub in sub_commands:
+        if sub.find("(") != -1:
+            final.append(parse_command(sub))
+        else:
+            final.append(sub)
+    return sub_commands
 
 
 def add_func(function, name, args):
