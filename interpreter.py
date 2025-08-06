@@ -19,7 +19,8 @@ def load_script():
 
     for command in commands:
         if len(command) > 0:
-            parse_command(command)
+            # parse_command(command)
+            print(split_command(command))
     
 
 def parse_command(command):
@@ -76,8 +77,13 @@ def split_command(command):
             open_parens += 1
         elif char == ')':
             close_parens += 1
-            if open_parens == close_parens:
-                sub_commands.append(command[parens_index+1:index])
+            if open_parens == close_parens == 1:
+                sub_commands.append([command[parens_index+1:index]])
+                fst_index = index+1
+                open_parens = 0
+                close_parens = 0
+            elif (open_parens == close_parens) and open_parens > 1:
+                sub_commands.append(split_command(command[parens_index+1:index]))
                 fst_index = index+1
                 open_parens = 0
                 close_parens = 0
@@ -87,11 +93,6 @@ def split_command(command):
 
     final = []
 
-    for sub in sub_commands:
-        if sub.find("(") != -1:
-            final.append(parse_command(sub))
-        else:
-            final.append(sub)
     return sub_commands
 
 
