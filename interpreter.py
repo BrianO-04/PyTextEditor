@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from lexer import Lexer
 
 function_dict = {}
 text_edit = None
@@ -12,7 +13,9 @@ def load_script():
         content = f.read()
         f.close()
     
-    
+    lexer = Lexer(content)
+    commands = lexer.generate_tokens()
+    print(list(commands))
 
 
 def add_func(function, name, args):
