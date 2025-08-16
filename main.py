@@ -107,7 +107,8 @@ def invert_func(text_edit, inputs):
 
 def get_index(text_edit, inputs):
     index = int(inputs[0])
-    return text_edit.get(1.0, tk.END)[index]
+    found = text_edit.get(1.0, tk.END)[index]
+    return found
 
 def load_script():
     fp = askopenfilename(filetypes=[("Text Files", "*.txt")])
