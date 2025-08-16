@@ -64,7 +64,12 @@ class Lexer:
     def generate_sub(self):
         self.advance()
         final = ''
-        while self.current_char != ')':
+        extra_parens = 0
+        while self.current_char != ')' or extra_parens > 0:
+            if self.current_char == '(':
+                extra_parens += 1
+            elif self.current_char == ')':
+                extra_parens -= 1
             final += self.current_char
             self.advance()
         self.advance()
