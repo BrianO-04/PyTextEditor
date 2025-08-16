@@ -28,7 +28,27 @@ class Interpreter:
                 self.run_command()
 
     def run_command(self):
-        pass
+        if self.current_token.value not in self.function_dict:
+            raise Exception(f"Function {self.current_token.value} not found in namespace")
+
+        command = self.current_token.value
+        args = []
+
+        self.advance()
+        while self.current_token.type != TokenType.SEMICOLON:
+            if self.current_token.type == TokenType.NUM or self.current_token.type == TokenType.STRING:
+                args.append(self.current_token.value)
+                self.advance()
+            elif self.current_token.type == TokenType.SUB_COMMAND:
+                args.append('TMP VALUE')
+                self.advance()
+            elif self.current_token.type == TokenType.COMMAND:
+                raise Exception(f"Function can not take command '{self.current_token.value}' as an argument")
+        
+        self.advance()
+        print(f'Command: {command}\nArgs: {args}')
+        return self.function_dict[command][0](self.text_edit, args)
+
 
 
 # function_dict = {}
