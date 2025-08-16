@@ -28,6 +28,7 @@ class Lexer:
             elif self.current_char == '(':
                 yield self.generate_sub()
             elif self.current_char == ';':
+                self.advance()
                 yield Token(TokenType.SEMICOLON)
             else:
                 raise Exception(f'Illegal char {self.current_char}')
@@ -37,7 +38,7 @@ class Lexer:
         cmd = ''
         cmd += self.current_char
         self.advance()
-        while self.current_char.isalpha():
+        while self.current_char != None and self.current_char.isalpha():
             cmd += self.current_char
             self.advance()
         return Token(TokenType.COMMAND, cmd)
@@ -54,9 +55,10 @@ class Lexer:
         quote_type = self.current_char #record if it is started with a ' or a "
         final_str = ''
         self.advance()
-        while self.current_char != quote_type:
+        while self.current_char != None and self.current_char != quote_type:
             final_str += self.current_char
             self.advance()
+        self.advance()
         return Token(TokenType.STRING, final_str)
     
     def generate_sub(self):
@@ -65,4 +67,5 @@ class Lexer:
         while self.current_char != ')':
             final += self.current_char
             self.advance()
+        self.advance()
         return Token(TokenType.SUB_COMMAND, final)
