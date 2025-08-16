@@ -23,7 +23,24 @@ class Lexer:
                 yield self.generate_num()
             elif self.current_char in QUOTES:
                 yield self.generate_string()
-            
+            elif self.current_char.isalpha():
+                yield self.generate_cmd()
+            elif self.current_char == '(':
+                yield self.generate_sub()
+            elif self.current_char == ';':
+                yield Token(TokenType.SEMICOLON)
+            else:
+                raise Exception(f'Illegal char {self.current_char}')
+
+
+    def generate_cmd(self):
+        cmd = ''
+        cmd += self.current_char
+        self.advance()
+        while self.current_char.isalpha():
+            cmd += self.current_char
+            self.advance()
+        return Token(TokenType.COMMAND, cmd)
 
     def generate_num(self):
         num_str = self.current_char
@@ -41,3 +58,11 @@ class Lexer:
             final_str += self.current_char
             self.advance()
         return Token(TokenType.STRING, final_str)
+    
+    def generate_sub(self):
+        self.advance()
+        final = ''
+        while self.current_char != ')':
+            final += self.current_char
+            self.advance()
+        return Token(TokenType.SUB_COMMAND, final)
