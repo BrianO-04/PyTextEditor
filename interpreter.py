@@ -17,10 +17,15 @@ class Interpreter:
     def add_func(self, func, name, args):
         self.function_dict.update({name : [func, args]})
 
-    def execute(self, text):
+    # creates and returns an iteratable list of command tokens from text
+    def parse(self, text):
         lexer = Lexer(text)
-        self.commands = lexer.generate_tokens()
-        self.commands = iter(list(self.commands)) #create an iteratable list of command tokens from text
+        commands = lexer.generate_tokens()
+        commands = iter(list(commands))
+        return commands
+
+    def execute(self, text):
+        self.commands = self.parse(text)
         self.advance()
 
         while self.current_token != None:
@@ -35,12 +40,19 @@ class Interpreter:
         args = []
 
         self.advance()
-        while self.current_token.type != TokenType.SEMICOLON:
+        while (self.current_token != None) and (self.current_token.type != TokenType.SEMICOLON):
             if self.current_token.type == TokenType.NUM or self.current_token.type == TokenType.STRING:
                 args.append(self.current_token.value)
                 self.advance()
             elif self.current_token.type == TokenType.SUB_COMMAND:
-                args.append('TMP VALUE')
+                
+                tmp_interpreter = Interpreter(self.text_edit)
+                tmp_interpreter.function_dict = self.function_dict
+                tmp_commands = tmp_interpreter.parse(self.current_token.value)
+                tmp_interpreter.commands = tmp_commands
+                tmp_interpreter.advance()
+
+                args.append(tmp_interpreter.run_command())
                 self.advance()
             elif self.current_token.type == TokenType.COMMAND:
                 raise Exception(f"Function can not take command '{self.current_token.value}' as an argument")
